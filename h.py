@@ -32,14 +32,24 @@ def stock_marcas(marca):
       print("Marca invalida / intente otra vez: ")
 
 def eliminar_producto(modelo):
- modelo
- productos = int(input("Ingrese el producto que desea eliminar: "))
- if any(modelo["marca"] == stock for modelo in productos):
-  print("--> Producto no encontrado <--")
-  return False
- else:
-   print("DESEA ELIMINAR OTRO PRODUCTO (S/N)")
-
+  while True:
+        modelo_eliminar = input("Ingrese el modelo del producto a eliminar (ej. 8475HD) o 'cancelar' para salir: ").strip()
+        if modelo_eliminar.lower() == 'cancelar':
+            break
+        
+        if modelo_eliminar in productos:
+            confirmacion = input(f"¿Está seguro de que desea eliminar el producto '{modelo_eliminar}'? (S/N): ").strip().upper()
+            if confirmacion == 'S':
+                del productos[modelo_eliminar]
+                if modelo_eliminar in stock:
+                    del stock[modelo_eliminar]
+                print(f"--> Producto '{modelo_eliminar}' eliminado exitosamente. <--")
+            else:
+                print("Operación de eliminación fue cancelada.")
+            break
+        else:
+            print("--> Producto no encontrado. Por favor, ingrese un modelo válido. <--")
+            continue
 def menu():
  while True:
   print("--> MENU PRINCIPAL <---")
