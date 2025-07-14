@@ -30,6 +30,55 @@ def stock_marcas(marca):
       print("Producto no encontrado o no existe: ")
      else:
       print("Marca invalida / intente otra vez: ")
+      
+def busqueda_ram_precio():
+    while True:
+        try:
+            ram_min_str= input("Ingrese la RAM mínima (ej. 4GB, 8GB, 16GB) o 'cancelar' para salir: ").strip().upper()
+            if ram_min_str.lower() == 'cancelar':
+                return
+            if ram_min_str not in rams_validas:
+                print("--> RAM mínima no válida. Por favor, use 4GB, 6GB, 8GB, o 16GB. <--")
+                continue
+            ram_max_str = input("Ingrese la RAM máxima (ej. 4GB, 8GB, 16GB) o 'cancelar' para salir: ").strip().upper()
+            if ram_max_str.lower() == 'cancelar':
+                return
+            if ram_max_str not in rams_validas:
+                print("--> RAM máxima no válida. Por favor, use 4GB, 6GB, 8GB, o 16GB. <--")
+                continue
+            ram_min_val = int(ram_min_str.replace('GB', ''))
+            ram_max_val = int(ram_max_str.replace('GB', ''))
+            if ram_min_val > ram_max_val:
+                print("--> La RAM mínima no puede ser mayor que la RAM máxima. <--")
+                continue
+            precio_max = int(input("Ingrese el precio máximo (solo números) o 'cancelar' para salir: ").strip())
+            if str(precio_max).lower() == 'cancelar':
+                return
+            break
+        except ValueError:
+            print("--> Entrada inválida. Asegúrese de ingresar solo números para el precio y valores válidos para la RAM. <--")
+
+    print(f"\n--- Productos con RAM entre {ram_min_str} y {ram_max_str} y precio hasta ${precio_max:,} ---")
+    productos_encontrados = False
+    for modelo, detalles in productos.items():
+        ram_producto_str = detalles[2]
+        ram_producto_val = int(ram_producto_str.replace('GB', ''))
+        
+        if ram_min_val <= ram_producto_val <= ram_max_val:
+            if modelo in stock:
+                precio_producto = stock[modelo][0]
+                cantidad_producto = stock[modelo][1]
+                if precio_producto <= precio_max:
+                    productos_encontrados = True
+                    print(f"  Modelo: {modelo}, Marca: {detalles[0]}, RAM: {detalles[2]}, Precio: ${precio_producto:,}, Stock: {cantidad_producto}")
+            else:
+                if precio_max >= 0:
+                    print(f"  Modelo: {modelo}, Marca: {detalles[0]}, RAM: {detalles[2]}, Precio: No disponible en stock, Stock: 0")
+
+    if not productos_encontrados:
+        print(">>> No se encontraron productos con los criterios especificados <<<")
+
+
 
 def eliminar_producto(modelo):
   while True:
