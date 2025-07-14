@@ -15,19 +15,21 @@ marcas_validas=["HP, Acer, Asus, Dell"]
 rams=["4GB, 8GB, 16GB"]
 ram_max=["16GB"]
 ram_min=["4GB"]
+
 def stock_marcas(marca):
- stock={}
- if marca in productos:
-  if stock["marcas"] == marca:
-   return None
-def busqueda_ram_precio(ram_max, ram_min, precio):
- stock={}
- while True:
-  try:
-   if precio <= stock:
-    print("INGRESE SU PEDIDO: ", ram_max, ram_min)
-  except:
-   print("--> Debe ingresar valores enteros <--")
+ marca = input("ingrese la marca del producto: ").capitalize()
+ if marca in marcas_validas:
+  encontrados = False
+  print(f/" Productos de la marca{marca}: /n")
+  for codigo, datos in productos.items():
+   if datos[0] == marca:
+     precio,cantidad = stock.get(codigo,[0,0])
+     print(F"{codigo}: {datos} - precio: {precio} - stock: {cantidad}")
+     encontrados = True
+     if not encontrados:
+      print("Producto no encontrado o no existe: ")
+     else:
+      print("Marca invalida / intente otra vez: ")
 
 def eliminar_producto(modelo):
  modelo
@@ -59,4 +61,3 @@ def menu():
    print("PROGRAMA FINALIZADO")
   break
 menu()
-....
